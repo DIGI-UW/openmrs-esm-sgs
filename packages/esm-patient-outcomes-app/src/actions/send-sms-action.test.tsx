@@ -1,24 +1,31 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { usePatient, useVisit, type VisitReturnType } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { mockPatient } from 'tools';
 import SendSmsActionOverflowMenuItem from './send-sms-action.component';
 
-const mockUsePatient = jest.mocked(usePatient);
-const mockUseVisit = jest.mocked(useVisit);
-
-jest.mock('@openmrs/esm-framework', () => ({
-  ...jest.requireActual('@openmrs/esm-framework'),
-  createGlobalStore: jest.fn(),
-  createUseStore: jest.fn(),
-  getGlobalStore: jest.fn(),
-}));
+const mockUsePatient = jest.fn();
+const mockUseVisit = jest.fn();
 
 mockUseVisit.mockReturnValue({
   currentVisit: null,
-} as VisitReturnType);
+});
+
+mockUsePatient.mockReturnValue({
+  error: null,
+  isLoading: false,
+  patient: null,
+  patientUuid: '',
+});
+
+jest.mock('@openmrs/esm-framework', () => ({
+  createGlobalStore: jest.fn(),
+  createUseStore: jest.fn(),
+  getGlobalStore: jest.fn(),
+  useVisit: jest.fn().mockImplementation((args) => mockUseVisit(args)),
+  usePatient: jest.fn().mockImplementation((args) => mockUsePatient(args)),
+}));
 
 jest.mock('@openmrs/esm-patient-common-lib', () => {
   const originalModule = jest.requireActual('@openmrs/esm-patient-common-lib');
