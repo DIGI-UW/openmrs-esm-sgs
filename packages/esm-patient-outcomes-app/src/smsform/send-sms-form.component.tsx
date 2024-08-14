@@ -9,9 +9,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ExtensionSlot, showSnackbar, useConnectivity, useLayoutType, usePatient } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
-import { type NewSmsPayload, type SmsFormData } from './send-sms-form.resource';
+import { type SmsFormData } from './common/types';
 import styles from './send-sms-form.scss';
-import { saveQuestionnaire } from './utils/send-sms-utils';
+import { saveQuestionnaire } from './common';
 import SendSmsField from './send-sms-input.componet';
 
 interface SendSmsFormProps extends DefaultPatientWorkspaceProps {
@@ -56,7 +56,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   }, [isDirty, promptBeforeClosing]);
 
   const onSubmit = useCallback(
-    (data: SmsFormData, event) => {
+    (data: SmsFormData, event: any) => {
       if (!patientUuid) {
         return;
       }
@@ -68,7 +68,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
       const body = window.location.host.concat(`/outcomes?pid=${guid}`);
       const source = window.location.host;
 
-      let payload: NewSmsPayload = {
+      let payload: SmsFormData = {
         to: to,
         guid: guid,
         body: body,
@@ -86,14 +86,14 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
               if (response.status === 200) {
                 showSnackbar({
                   kind: 'success',
-                  title: t('smsSent', 'SMS Delivered'),
-                  subtitle: t('sendSmsSuccessful', `PRO Questionnaire url (SMS) sent to Patient successfully!`),
+                  title: t('smsSent', 'SMS sent'),
+                  subtitle: t('proQuestionnaireUrlSent', 'PRO Questionnaire url (SMS) sent to Patient successfully!'),
                 });
                 setIsSubmitting(false);
               } else {
                 closeWorkspace({ ignoreChanges: true });
                 showSnackbar({
-                  title: t('smsError', 'SMS Failed'),
+                  title: t('smsError', 'SMS seding failed'),
                   kind: 'error',
                   isLowContrast: false,
                   subtitle: t('sendSmsError', 'Error sending PRO Questionnaire url (SMS)!!'),
@@ -101,12 +101,13 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
               }
             },
           });
+        console.error('Save questionnaire method called.....');
       } else {
         showSnackbar({
-          title: t('smsError', 'SMS Failed'),
+          title: t('smsError', 'SMS seding failed'),
           kind: 'error',
           isLowContrast: false,
-          subtitle: t('sendSmsError', 'Cannot send SMS without Intenet connection!!'),
+          subtitle: t('sendSmsInternetError', 'Cannot send SMS without Intenet connection!!'),
         });
       }
     },
@@ -148,10 +149,10 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
           <Stack gap={1} className={styles.container}>
             <SendSmsField
               inputFieldId="to"
-              inputFieldLabel={t('smsReceiver', 'Phone number')}
+              inputFieldLabel={t('smsReceiver', 'SMS Recipient phone number')}
               inputFieldName="to"
               inputFieldType="text"
-              inputFieldPlaceholder={t('smsReceiver', 'SMS receipient phone number')}
+              inputFieldPlaceholder={t('smsReceiver', 'SMS Recipient phone number')}
             />
           </Stack>
         </div>
@@ -170,7 +171,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
             kind="primary"
             type="submit">
             {isSubmitting ? (
-              <InlineLoading className={styles.spinner} description={t('sendingSms', 'Sending sms') + '...'} />
+              <InlineLoading className={styles.spinner} description={t('sendingSms', 'Sending SMS') + '...'} />
             ) : (
               'Send SMS'
             )}

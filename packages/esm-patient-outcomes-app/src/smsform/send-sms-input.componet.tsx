@@ -3,13 +3,13 @@ import styles from './send-sms-form.scss';
 import { Controller, useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 import { ResponsiveWrapper } from '@openmrs/esm-framework';
-import { type SmsFormData } from './send-sms-form.resource';
+import { type SmsFormData } from './common/types';
 import { TextInput } from '@carbon/react';
 
 interface SendSmsFieldProps {
   inputFieldId: string;
   inputFieldLabel: string;
-  inputFieldName: 'to' | 'guid' | 'body' | 'source' | 'patientUuid';
+  inputFieldName: 'to';
   inputFieldType: 'number' | 'text';
   inputFieldPlaceholder: string;
 }
@@ -37,6 +37,7 @@ const SendSmsField: React.FC<SendSmsFieldProps> = ({
             <ResponsiveWrapper>
               <TextInput
                 id={inputFieldId}
+                name={inputFieldName}
                 onChange={(event) => onChange(event.target.value)}
                 onBlur={onBlur}
                 placeholder={inputFieldPlaceholder}

@@ -36,7 +36,7 @@ jest.mock('@openmrs/esm-patient-common-lib', () => {
 });
 
 describe('SendSmsActionOverflowMenuItem', () => {
-  it('should launch send outcomes form', async () => {
+  it('should launch send outcomes sms form', async () => {
     const user = userEvent.setup();
 
     mockUsePatient.mockReturnValue({
@@ -56,7 +56,7 @@ describe('SendSmsActionOverflowMenuItem', () => {
     expect(launchPatientWorkspace).toHaveBeenCalledWith('send-outcomes-form');
   });
 
-  it('should not show send outcomes button for deceased patient', () => {
+  it('should not show send outcomes sms button for deceased patient', () => {
     mockUsePatient.mockReturnValue({
       error: null,
       isLoading: false,
