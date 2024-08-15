@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuid } from 'uuid';
-import { showSnackbar } from '@openmrs/esm-framework';
 import { mockPatient } from 'tools';
 import saveQuestionnaireResource from './common/send-sms-resource';
 import SendSmsForm from './send-sms-form.component';
@@ -30,7 +29,6 @@ const testProps = {
   showPatientHeader: false,
 };
 
-const mockShowSnackbar = jest.mocked(showSnackbar);
 const mockSaveQuestionnaire = jest.spyOn(saveQuestionnaireResource, 'saveQuestionnaire');
 
 describe('SendSmsForm', () => {

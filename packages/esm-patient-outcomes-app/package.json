@@ -1,6 +1,6 @@
 {
   "name": "@i-tech-uw/esm-patient-outcomes-app",
-  "version": "8.1.0",
+  "version": "1.0.0",
   "license": "MPL-2.0",
   "description": "Patient reported outcomes microfrontend for the OpenMRS SPA",
   "browser": "dist/esm-patient-outcomes-app.js",
@@ -54,5 +54,6 @@
   "devDependencies": {
     "@openmrs/esm-patient-common-lib": "*",
     "webpack": "^5.88.2"
-  }
+  },
+  "author": "Christopher Miiro"
 }
