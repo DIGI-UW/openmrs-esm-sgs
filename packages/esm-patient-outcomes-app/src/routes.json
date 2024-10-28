@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": "^2.2.0"
+  },
+  "extensions": [
+    {
+      "name": "send-outcomes-button",
+      "component": "sendSmsActionButton",
+      "slot": "patient-actions-slot",      
+      "online": true,
+      "offline": true
+    },
+    {
+      "name": "send-outcomes-form",
+      "component": "sendSmsForm",
+      "meta": {
+        "title": "Send PRO SMS"
+      },
+      "online": true,
+      "offline": true
+    }
+  ],
+  "modals": [
+    {
+      "name": "print-identifier-sticker-modal",
+      "component": "printIdentifierStickerModal"
+    }
+  ]
+}

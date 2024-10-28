@@ -1,0 +1,13 @@
+{
+  "discard": "Discard",
+  "partOfFormDidntLoad": "Part of the form did not load",
+  "proQuestionnaireUrlSent": "PRO Questionnaire url (SMS) sent to Patient successfully!",
+  "refreshToTryAgain": "Please refresh to try again",
+  "sendingSms": "Sending SMS",
+  "sendSMS": "Send PRO SMS",
+  "sendSmsError": "Error sending PRO Questionnaire url (SMS)!!",
+  "sendSmsInternetError": "Cannot send SMS without Intenet connection!!",
+  "smsError": "SMS seding failed",
+  "smsReceiver": "SMS Recipient phone number",
+  "smsSent": "SMS sent"
+}

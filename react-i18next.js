@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/render-result-naming-convention */
 const React = require('react');
 const reactI18next = require('react-i18next');
 
