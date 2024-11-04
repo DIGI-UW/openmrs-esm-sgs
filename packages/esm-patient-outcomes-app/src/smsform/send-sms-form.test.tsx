@@ -18,6 +18,7 @@ const payload: SmsFormData = {
   body: bodyValue,
   source: sourceValue,
   patientUuid: mockPatient.id,
+  locale: '',
 };
 
 const testProps = {
@@ -36,6 +37,7 @@ describe('SendSmsForm', () => {
     render(<SendSmsForm {...testProps} />);
 
     expect(screen.getByText(/Phone number/i)).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /Select Language/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Send SMS/i })).toBeInTheDocument();
   });
 

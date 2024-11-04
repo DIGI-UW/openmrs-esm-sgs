@@ -7,12 +7,21 @@ import { first } from 'rxjs/operators';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ExtensionSlot, showSnackbar, useConnectivity, useLayoutType, usePatient } from '@openmrs/esm-framework';
+import {
+  ExtensionSlot,
+  showSnackbar,
+  useConnectivity,
+  useLayoutType,
+  usePatient,
+  useSession,
+} from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import { type SmsFormData } from './common/types';
 import styles from './send-sms-form.scss';
 import { saveQuestionnaire } from './common';
 import SendSmsField from './send-sms-input.componet';
+import { Select } from '@carbon/react';
+import { SelectItem } from '@carbon/react';
 
 interface SendSmsFormProps extends DefaultPatientWorkspaceProps {
   showPatientHeader?: boolean;
@@ -27,6 +36,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   const isTablet = useLayoutType() === 'tablet';
   const isOnline = useConnectivity();
   const { patientUuid, patient } = usePatient();
+  const { locale, allowedLocales } = useSession();
   const visitHeaderSlotState = useMemo(() => ({ patientUuid }), [patientUuid]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -38,6 +48,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
     const phoneValidation = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
     return z.object({
       to: z.string().regex(phoneValidation, { message: 'Invalid phone number' }),
+      locale: z.string().min(1, { message: 'Language selection is required' }),
     });
   }, []);
 
@@ -58,6 +69,12 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
     promptBeforeClosing(() => isDirty);
   }, [isDirty, promptBeforeClosing, patient]);
 
+  useEffect(() => {
+    if (locale) {
+      methods.setValue('locale', locale);
+    }
+  }, [locale]);
+
   const onSubmit = useCallback(
     (data: SmsFormData, event: any) => {
       if (!patientUuid) {
@@ -65,10 +82,10 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
       }
 
       setIsSubmitting(true);
+      const { to, locale } = data;
 
-      const { to } = data;
       const guid = uuid();
-      const body = window.location.host.concat(`/outcomes?pid=${guid}`);
+      const body = window.location.host.concat(`/outcomes?pid=${guid}&locale=${locale}`);
       const source = window.location.host;
 
       let payload: SmsFormData = {
@@ -77,6 +94,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
         body: body,
         source: source,
         patientUuid: patientUuid,
+        locale: locale,
       };
 
       const abortController = new AbortController();
@@ -157,6 +175,18 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
               inputFieldType="text"
               inputFieldPlaceholder={t('smsReceiver', 'SMS Recipient phone number')}
             />
+            <div>
+              <Select
+                id="locale-select"
+                labelText={t('selectLanguage', 'Select Language')}
+                invalid={!!methods.formState.errors.locale}
+                invalidText={methods.formState.errors.locale?.message}
+                {...methods.register('locale')}>
+                {allowedLocales?.map((allowedLocale) => (
+                  <SelectItem key={allowedLocale} value={allowedLocale} text={allowedLocale} />
+                ))}
+              </Select>
+            </div>
           </Stack>
         </div>
         <ButtonSet

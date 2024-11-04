@@ -4,6 +4,7 @@ export type SmsFormData = {
   body: string;
   source: string;
   patientUuid: string;
+  locale: string;
 };
 
 export type UpdateSmsPayload = SmsFormData & {};
