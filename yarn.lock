@@ -1998,12 +1998,12 @@ __metadata:
   resolution: "@i-tech-uw/esm-patient-outcomes-app@workspace:packages/esm-patient-outcomes-app"
   dependencies:
     "@carbon/react": "npm:^1.12.0"
-    "@openmrs/esm-patient-common-lib": "npm:*"
+    "@openmrs/esm-patient-common-lib": "npm:8.x"
     lodash-es: "npm:^4.17.21"
     webpack: "npm:^5.88.2"
   peerDependencies:
     "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": "*"
+    "@openmrs/esm-patient-common-lib": 8.x
     dayjs: 1.x
     react: 18.x
     react-i18next: 11.x
@@ -3259,7 +3259,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-patient-common-lib@npm:*, @openmrs/esm-patient-common-lib@npm:next":
+"@openmrs/esm-patient-common-lib@npm:8.x":
+  version: 8.2.0
+  resolution: "@openmrs/esm-patient-common-lib@npm:8.2.0"
+  dependencies:
+    "@carbon/react": "npm:^1.12.0"
+    lodash-es: "npm:^4.17.21"
+    uuid: "npm:^8.3.2"
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: 18.x
+    single-spa: 6.x
+  checksum: 10/438f956cd758535a06750ff1c74fad5531f18a68a1131845e27c41d070f58742ae90db8623915e8a0fa719c4195050b8bf3b1702f15c1fe0792658c7b6243c51
+  languageName: node
+  linkType: hard
+
+"@openmrs/esm-patient-common-lib@npm:next":
   version: 8.1.1-pre.5230
   resolution: "@openmrs/esm-patient-common-lib@npm:8.1.1-pre.5230"
   dependencies:

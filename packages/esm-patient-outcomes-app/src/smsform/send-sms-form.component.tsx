@@ -52,7 +52,9 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   } = methods;
 
   useEffect(() => {
-    patient?.telecom[0]?.value ? methods.setValue('to', patient?.telecom[0]?.value) : null;
+    if (patient?.telecom && patient.telecom[0]?.value) {
+      methods.setValue('to', patient.telecom[0].value);
+    }
     promptBeforeClosing(() => isDirty);
   }, [isDirty, promptBeforeClosing, patient]);
 
