@@ -52,8 +52,11 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   } = methods;
 
   useEffect(() => {
+    if (patient?.telecom && patient.telecom[0]?.value) {
+      methods.setValue('to', patient.telecom[0].value);
+    }
     promptBeforeClosing(() => isDirty);
-  }, [isDirty, promptBeforeClosing]);
+  }, [isDirty, promptBeforeClosing, patient]);
 
   const onSubmit = useCallback(
     (data: SmsFormData, event: any) => {
