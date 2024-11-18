@@ -7,7 +7,7 @@
   "sendSMS": "Send PRO SMS",
   "sendSmsError": "Error sending PRO Questionnaire url (SMS)!!",
   "sendSmsInternetError": "Cannot send SMS without Intenet connection!!",
-  "smsError": "SMS seding failed",
+  "smsError": "Sending SMS failed",
   "smsReceiver": "SMS Recipient phone number",
   "smsSent": "SMS sent"
 }

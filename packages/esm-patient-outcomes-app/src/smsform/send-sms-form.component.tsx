@@ -1,6 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { Button, ButtonSet, Form, InlineLoading, InlineNotification, Row, Stack } from '@carbon/react';
+import {
+  Button,
+  ButtonSet,
+  Form,
+  InlineLoading,
+  InlineNotification,
+  Row,
+  Stack,
+  Select,
+  SelectItem,
+} from '@carbon/react';
 import { v4 as uuid } from 'uuid';
 import { FormProvider, useForm } from 'react-hook-form';
 import { first } from 'rxjs/operators';
@@ -17,11 +27,9 @@ import {
 } from '@openmrs/esm-framework';
 import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import { type SmsFormData } from './common/types';
-import styles from './send-sms-form.scss';
 import { saveQuestionnaire } from './common';
-import SendSmsField from './send-sms-input.componet';
-import { Select } from '@carbon/react';
-import { SelectItem } from '@carbon/react';
+import SendSmsField from './send-sms-input.component';
+import styles from './send-sms-form.scss';
 
 interface SendSmsFormProps extends DefaultPatientWorkspaceProps {
   showPatientHeader?: boolean;
@@ -39,6 +47,14 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   const { locale, allowedLocales } = useSession();
   const visitHeaderSlotState = useMemo(() => ({ patientUuid }), [patientUuid]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedLocale, setSelectedLocale] = useState(locale);
+  const languageNames = useMemo(
+    () =>
+      Object.fromEntries(
+        allowedLocales.map((locale) => [locale, new Intl.DisplayNames([locale], { type: 'language' }).of(locale)]),
+      ),
+    [allowedLocales],
+  );
 
   const [errorFetchingResources] = useState<{
     blockSavingForm: boolean;
@@ -70,10 +86,8 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   }, [isDirty, promptBeforeClosing, patient]);
 
   useEffect(() => {
-    if (locale) {
-      methods.setValue('locale', locale);
-    }
-  }, [locale]);
+    methods.setValue('locale', selectedLocale);
+  }, [selectedLocale, methods]);
 
   const onSubmit = useCallback(
     (data: SmsFormData, event: any) => {
@@ -82,10 +96,15 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
       }
 
       setIsSubmitting(true);
-      const { to, locale } = data;
+      const { to } = data;
 
       const guid = uuid();
-      const body = window.location.host.concat(`/outcomes?pid=${guid}&locale=${locale}`);
+      const url = new URL(window.location.origin);
+      const params = new URLSearchParams({ pid: guid, locale: selectedLocale });
+      url.pathname = '/outcomes';
+      url.search = params.toString();
+      const body = url.toString();
+
       const source = window.location.host;
 
       let payload: SmsFormData = {
@@ -94,7 +113,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
         body: body,
         source: source,
         patientUuid: patientUuid,
-        locale: locale,
+        locale: selectedLocale,
       };
 
       const abortController = new AbortController();
@@ -114,7 +133,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
               } else {
                 closeWorkspace({ ignoreChanges: true });
                 showSnackbar({
-                  title: t('smsError', 'SMS seding failed'),
+                  title: t('smsError', 'Sending SMS failed'),
                   kind: 'error',
                   isLowContrast: false,
                   subtitle: t('sendSmsError', 'Error sending PRO Questionnaire url (SMS)!!'),
@@ -132,7 +151,7 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
         });
       }
     },
-    [closeWorkspace, isOnline, patientUuid, t],
+    [closeWorkspace, isOnline, patientUuid, selectedLocale, t],
   );
 
   return (
@@ -177,13 +196,12 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
             />
             <div>
               <Select
-                id="locale-select"
+                id="language-select"
                 labelText={t('selectLanguage', 'Select Language')}
-                invalid={!!methods.formState.errors.locale}
-                invalidText={methods.formState.errors.locale?.message}
-                {...methods.register('locale')}>
-                {allowedLocales?.map((allowedLocale) => (
-                  <SelectItem key={allowedLocale} value={allowedLocale} text={allowedLocale} />
+                value={selectedLocale}
+                onChange={(event) => setSelectedLocale(event.target.value)}>
+                {allowedLocales?.map((locale, i) => (
+                  <SelectItem key={`locale-option-${locale}-${i}`} value={locale} text={languageNames[locale]} />
                 ))}
               </Select>
             </div>
