@@ -9,14 +9,12 @@ interface SendSmsActionOverflowMenuItemProps {
 
 const SendSmsActionOverflowMenuItem: React.FC<SendSmsActionOverflowMenuItemProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { currentVisit } = useVisit(patientUuid);
   const { patient } = usePatient(patientUuid);
   const handleClick = useCallback(() => launchPatientWorkspace('send-outcomes-form'), []);
 
   const isDeceased = Boolean(patient?.deceasedDateTime);
 
   return (
-    !currentVisit &&
     !isDeceased && (
       <li className="cds--overflow-menu-options__option">
         <button
