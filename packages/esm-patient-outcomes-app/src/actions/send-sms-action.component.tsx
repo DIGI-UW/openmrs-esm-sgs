@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePatient, useVisit } from '@openmrs/esm-framework';
+import { usePatient } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 
 interface SendSmsActionOverflowMenuItemProps {
