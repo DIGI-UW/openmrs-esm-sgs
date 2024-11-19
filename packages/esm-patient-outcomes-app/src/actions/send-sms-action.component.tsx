@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePatient, useVisit } from '@openmrs/esm-framework';
+import { usePatient } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 
 interface SendSmsActionOverflowMenuItemProps {
@@ -9,14 +9,12 @@ interface SendSmsActionOverflowMenuItemProps {
 
 const SendSmsActionOverflowMenuItem: React.FC<SendSmsActionOverflowMenuItemProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { currentVisit } = useVisit(patientUuid);
   const { patient } = usePatient(patientUuid);
   const handleClick = useCallback(() => launchPatientWorkspace('send-outcomes-form'), []);
 
   const isDeceased = Boolean(patient?.deceasedDateTime);
 
   return (
-    !currentVisit &&
     !isDeceased && (
       <li className="cds--overflow-menu-options__option">
         <button
