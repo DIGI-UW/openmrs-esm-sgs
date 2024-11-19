@@ -51,7 +51,10 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
   const languageNames = useMemo(
     () =>
       Object.fromEntries(
-        allowedLocales.map((locale) => [locale, new Intl.DisplayNames([locale], { type: 'language' }).of(locale)]),
+        (allowedLocales ?? []).map((locale) => [
+          locale,
+          new Intl.DisplayNames([locale], { type: 'language' }).of(locale),
+        ]),
       ),
     [allowedLocales],
   );

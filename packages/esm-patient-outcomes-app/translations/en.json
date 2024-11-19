@@ -3,6 +3,7 @@
   "partOfFormDidntLoad": "Part of the form did not load",
   "proQuestionnaireUrlSent": "PRO Questionnaire url (SMS) sent to Patient successfully!",
   "refreshToTryAgain": "Please refresh to try again",
+  "selectLanguage": "Select Language",
   "sendingSms": "Sending SMS",
   "sendSMS": "Send PRO SMS",
   "sendSmsError": "Error sending PRO Questionnaire url (SMS)!!",
