@@ -5,6 +5,13 @@
   },
   "extensions": [
     {
+      "name": "show-patient-dashscore",
+      "component": "showPatientDashScoreRow",
+      "slot": "patient-highlights-bar-slot",      
+      "online": true,
+      "offline": true
+    },
+    {
       "name": "send-outcomes-button",
       "component": "sendSmsActionButton",
       "slot": "patient-actions-slot",      
