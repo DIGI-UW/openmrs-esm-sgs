@@ -3,6 +3,7 @@ import * as PatientCommonLib from '@openmrs/esm-patient-common-lib';
 import { moduleName } from './constants';
 import sendSmsFormComponent from './smsform/send-sms-form.component';
 import sendSmsActionButtonComponent from './actions/send-sms-action.component';
+import patientBannerDashScoreComponent from './dashscore/patient-dashscore.component';
 
 window['_openmrs_esm_patient_common_lib'] = PatientCommonLib;
 
@@ -17,5 +18,10 @@ export const sendSmsForm = getSyncLifecycle(sendSmsFormComponent, {
 
 export const sendSmsActionButton = getSyncLifecycle(sendSmsActionButtonComponent, {
   featureName: 'send-outcomes-button',
+  moduleName,
+});
+
+export const showPatientDashScoreRow = getSyncLifecycle(patientBannerDashScoreComponent, {
+  featureName: 'show-patient-dashscore',
   moduleName,
 });
