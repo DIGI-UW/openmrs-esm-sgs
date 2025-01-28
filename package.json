@@ -1,7 +1,6 @@
 {
   "name": "@i-tech-uw/esm-sgs",
   "version": "1.0.0",
-  "private": true,
   "description": "Custom applications for the O3 version of SGS",
   "workspaces": [
     "packages/*"
