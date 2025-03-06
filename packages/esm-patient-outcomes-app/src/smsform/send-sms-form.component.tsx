@@ -103,10 +103,25 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
 
       const guid = uuid();
       const url = new URL(window.location.origin);
-      const params = new URLSearchParams({ pid: guid, locale: selectedLocale });
+      const params = new URLSearchParams({ pid: guid, locale: selectedLocale, type: 'foot' });
       url.pathname = '/outcomes';
       url.search = params.toString();
-      const body = url.toString();
+      let instructionText = '';
+
+      switch (selectedLocale) {
+        case 'es':
+          instructionText = 'Por favor complete el formulario posterior a la cirugía: ';
+          break;
+        case 'vi':
+          instructionText = 'Vui lòng điền vào biểu mẫu hậu phẫu: ';
+          break;
+        case 'en':
+        default:
+          instructionText = 'Please fill out the post surgery form: ';
+          break;
+      }
+
+      const body = instructionText + url.toString();
 
       const source = window.location.host;
 
@@ -144,7 +159,6 @@ const SendSmsForm: React.FC<SendSmsFormProps> = ({
               }
             },
           });
-        console.error('Save questionnaire method called.....');
       } else {
         showSnackbar({
           title: t('smsError', 'SMS seding failed'),
